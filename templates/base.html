@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>Topics</title>
+    <link rel="stylesheet" href="/assets/css/style.css">
+</head>
+<body>
+
+{% if logiran %}
+
+    <nav class="navbar">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="/">Forum </a>
+                <a class="navbar-brand" href="/new-topic">Create new topic</a>
+            </div>
+    </nav>
+    <br><br>
+
+    <h3>Welcome, {{ user.nickname() }}!</h3>
+
+    <form method="post" action="/">
+
+        <a class="button" href="{{ logout_url }}">Logout</a>
+        <br>
+        <h1>Topics:</h1>
+
+        <div class="list">
+        {% for topic in seznam %}
+            <div class="topic">
+            <p><a class="weight" href="/topic/{{ topic.key.id() }}">{{ topic.title }}</a><br><a><span>{{ topic.name }},  {{ topic.date }}</span></a></p>
+            </div>
+        {% endfor %}
+
+        </div>
+    </form>
+
+{% else %}
+    <h1>Welcome!</h1>
+
+    <p>Please, login: </p><a class="button" href="{{ login_url }}">Login</a>
+
+{% endif %}
+
+</body>
+</html>

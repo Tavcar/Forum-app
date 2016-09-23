@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Create new topic</title>
+    <link rel="stylesheet" href="/assets/css/style.css">
+</head>
+<body>
+
+    <nav class="navbar">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="/">Forum </a>
+                <a class="navbar-brand" href="/new-topic">Create new topic</a>
+            </div>
+    </nav>
+    <br><br>
+
+{% if user.nickname() %}
+    <h1>Create topic</h1>
+    <br><br>
+
+    <form action="/new-topic" method="post" class="newtpc">
+        <p>Title:</p><input name="title" required>
+        <br><br>
+            <div class="text">
+            <p>Content:</p><textarea name="content" required></textarea>
+            </div>
+        <br>
+        <button type="submit" class="gumb">Create</button>
+        <br><br>
+    </form>
+{% endif %}
+
+</body>
+</html>

@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Post</title>
+    <link rel="stylesheet" href="/assets/css/style.css">
+</head>
+<body>
+
+    <nav class="navbar">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="/">Forum </a>
+                <a class="navbar-brand" href="/new-topic">Create new topic</a>
+            </div>
+    </nav>
+
+    <div class="bottom">
+    <form action="/topic/{{ topic.key.id() }}/post" method="post">
+        <p>Ime: </p><input name="name">
+        <br>
+        <div>
+            <br>
+            <p>Content:</p>
+            <br>
+            <textarea name="content" required></textarea>
+        </div>
+        <button type="submit">Submit</button>
+    </form>
+    </div>
+</body>
+</html>

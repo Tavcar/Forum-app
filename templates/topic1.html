@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ topic.title }}</title>
+    <link rel="stylesheet" href="/assets/css/style.css">
+</head>
+<body>
+
+    <nav class="navbar">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="/">Forum </a>
+                <a class="navbar-brand" href="/new-topic">Create new topic</a>
+            </div>
+    </nav>
+    <br><br>
+
+    <h1>{{ topic.title }}</h1>
+    <h3>{{ topic.content }}</h3>
+
+    <div class="gumbi">
+    {% if user.admin==True %}
+    <a href="/delete-topic/{{ topic.key.id() }}" class="deltpc">Delete topic</a>
+    {% endif %}
+
+    {% if topic.closed==False and user.admin==True %}
+    <a href="/close-open/{{ topic.key.id() }}" class="button">Close topic</a>
+    {% endif %}
+    {% if topic.closed==True and user.admin==True %}
+    <a href="/close-open/{{ topic.key.id() }}" class="button">Open topic</a>
+    {% endif %}
+    </div>
+
+    {% for post in seznam %}
+    <div id="{{ post.key.id() }}" class="post">
+        <div>
+            <div class="head">
+            <a href="/topic/{{ topic.key.id() }}#{{ post.key.id() }}">Posted by {{ post.name }}  <span class="date">{{ post.date }}</span></a>
+
+            {% if user.admin==True or post.name==user.nickname() %}
+                <div class="delbtn">
+                <a href="/delete-post/{{ post.key.id() }}">Delete</a>
+                </div>
+            {% endif %}
+            </div>
+                <div class="content">
+                {{ post.content }}
+                </div>
+        </div>
+    </div>
+    {% endfor %}
+
+    {% if user.nickname() and topic.closed==False %}
+        <div class="postbot">
+            <div>
+                <h3>Add a new post:</h3>
+            </div>
+            <div>
+                <form name="new-post" method="post">
+                    <div class="conttpc">
+                    <textarea name="content" placeholder="Text goes here..."></textarea>
+                    </div>
+                    <br>
+                    <input name="new-post" type="submit" class="gumb" value="Post">
+                    <br><br>
+                </form>
+            </div>
+        </div>
+
+    {% elif user.nickname() == none %}
+        <h3>You must be logged in to comment!</h3>
+    {% elif topic.closed==True %}
+        <h3>This topic is closed!</h3>
+    {% endif %}
+
+</body>
+</html>

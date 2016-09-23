@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Close topic</title>
+    <link rel="stylesheet" href="/assets/css/style.css">
+</head>
+<body>
+
+    <nav class="navbar">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="/">Forum </a>
+                <a class="navbar-brand" href="/new-topic">Create new topic</a>
+            </div>
+    </nav>
+    <br><br>
+    <h1>Are you sure?</h1>
+
+    {% if user.admin==True %}
+        {% if topic.closed==False %}
+        <form action="/close-open/{{ topic.key.id() }}" method="post">
+            <button type="submit" class="button">Close topic</button>
+        </form>
+        {% else %}
+        <form action="/close-open/{{ topic.key.id() }}" method="post">
+            <button type="submit" class="button">Open topic</button>
+        </form>
+        {% endif %}
+    {% endif %}
+
+</body>
+</html>
