@@ -6,7 +6,6 @@ import webapp2
 from google.appengine.api import users
 from models import Post
 from models import Topic
-from models import User
 from operator import attrgetter
 from datetime import datetime
 from admins import ADMIN

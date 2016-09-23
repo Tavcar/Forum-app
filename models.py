@@ -33,14 +33,3 @@ class Post(ndb.Model):
         return post
 
 
-class User(ndb.Model):
-    first_name = ndb.StringProperty()
-    last_name = ndb.StringProperty()
-    email = ndb.StringProperty()
-    admin = ndb.BooleanProperty(default=False)
-
-    @classmethod
-    def create(cls, email, admin):
-        user = cls(email=email, admin=admin)
-        user.put()
-        return user

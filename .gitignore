@@ -61,4 +61,4 @@ target/
 templates/open.html
 templates/topic.html
 admins.py
-admins.pyc
+.pyc
