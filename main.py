@@ -9,6 +9,7 @@ from models import Topic
 from operator import attrgetter
 from datetime import datetime
 from admins import ADMIN
+from decorators import login_required, admin_required
 
 template_dir = os.path.join(os.path.dirname(__file__), "templates")
 jinja_env = jinja2.Environment(loader=jinja2.FileSystemLoader(template_dir), autoescape=True)
@@ -56,6 +57,7 @@ class MainHandler(BaseHandler):
 
 
 class NewTopicHandler(BaseHandler):
+    @login_required
     def get(self):
         user = users.get_current_user()
         if user.nickname() in ADMIN:
@@ -64,8 +66,8 @@ class NewTopicHandler(BaseHandler):
         params = {"user": user}
         return self.render_template("new_topic.html", params=params)
 
+    @login_required
     def post(self):
-
         user = users.get_current_user()
         name = user.nickname()
         title = self.request.get("title")
@@ -79,6 +81,7 @@ class NewTopicHandler(BaseHandler):
 
 
 class TopicHandler(BaseHandler):
+    @login_required
     def get(self, topic_id):
         user = users.get_current_user()
         if user.nickname() in ADMIN:
@@ -92,6 +95,7 @@ class TopicHandler(BaseHandler):
 
         return self.render_template("topic1.html", params=params)
 
+    @login_required
     def post(self, topic_id):
         user = users.get_current_user()
         name = user.nickname()
@@ -112,6 +116,8 @@ class TopicHandler(BaseHandler):
 
 
 class DeleteTopicHandler(BaseHandler):
+    @admin_required
+    @login_required
     def get(self, topic_id):
         user = users.get_current_user()
         if user.nickname() in ADMIN:
@@ -119,6 +125,8 @@ class DeleteTopicHandler(BaseHandler):
 
         return self.render_template("delete.html")
 
+    @admin_required
+    @login_required
     def post(self, topic_id):
         topic = Topic.get_by_id(int(topic_id))
         topic.key.delete()
@@ -127,12 +135,14 @@ class DeleteTopicHandler(BaseHandler):
 
 
 class DeletePostHandler(BaseHandler):
+    @login_required
     def get(self, post_id):
         user = users.get_current_user().nickname()
 
         if user in ADMIN or user == Post.get_by_id(int(post_id)).name:
             return self.render_template("delete.html")
 
+    @login_required
     def post(self, post_id):
         post = Post.get_by_id(int(post_id))
         post.key.delete()
@@ -141,6 +151,8 @@ class DeletePostHandler(BaseHandler):
 
 
 class CloseTopicHandler(BaseHandler):
+    @admin_required
+    @login_required
     def get(self, topic_id):
         user = users.get_current_user()
         topic = Topic.get_by_id(int(topic_id))
@@ -150,15 +162,16 @@ class CloseTopicHandler(BaseHandler):
             user.admin = True
         return self.render_template("close.html", params=params)
 
+    @admin_required
+    @login_required
     def post(self, topic_id):
         topic = Topic.get_by_id(int(topic_id))
 
-        if topic.closed == False:
+        if topic.closed is False:
             topic.closed = True
             topic.put()
             return self.redirect('/topic/' + str(topic.key.id()))
-
-        if topic.closed == True:
+        else:
             topic.closed = False
             topic.put()
             return self.redirect('/topic/' + str(topic.key.id()))
