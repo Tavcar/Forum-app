@@ -1,77 +1,115 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>{{ topic.title }}</title>
+    <link rel="stylesheet"
+href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script
+src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script
+src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <link rel="stylesheet" href="/assets/css/style.css">
+
 </head>
 <body>
 
-    <nav class="navbar">
-            <div class="navbar-header">
-                <a class="navbar-brand" href="/">Home </a>
-                <a class="navbar-brand" href="/new-topic">Create new topic</a>
-            </div>
-    </nav>
-    <br><br>
-
-    <h1>{{ topic.title }}</h1>
-    <h3>{{ topic.content }}</h3>
-
-    <div class="gumbi">
-    {% if user.admin==True %}
-    <a href="/delete-topic/{{ topic.key.id() }}" class="deltpc">Delete topic</a>
-    {% endif %}
-
-    {% if topic.closed==False and user.admin==True %}
-    <a href="/close-open/{{ topic.key.id() }}" class="button">Close topic</a>
-    {% endif %}
-    {% if topic.closed==True and user.admin==True %}
-    <a href="/close-open/{{ topic.key.id() }}" class="button">Open topic</a>
-    {% endif %}
+<nav class="navbar navbar-inverse navbar-static-top">
+  <div class="container-fluid">
+    <!-- Brand and toggle get grouped for better mobile display -->
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
     </div>
 
-    {% for post in seznam %}
-    <div id="{{ post.key.id() }}" class="post">
-        <div>
-            <div class="head">
-            <a href="/topic/{{ topic.key.id() }}#{{ post.key.id() }}">Posted by {{ post.name }}  <span class="date">{{ post.date }}</span></a>
+    <!-- Collect the nav links, forms, and other content for toggling -->
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+      <ul class="nav navbar-nav">
+          <li><a href="/">Topics</a></li>
+          <li><a href="/new-topic">Create new topic</a></li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li><a href="{{ logout_url }}">Logout</a></li>
+      </ul>
+    </div><!-- /.navbar-collapse -->
+  </div><!-- /.container-fluid -->
+</nav>  
+<br>
+    
+<div class="container">
+    <div>
+        <h1>{{ topic.title }}</h1>
+        <h4>{{ topic.content }}</h4>
 
-            {% if user.admin==True or post.name==user.nickname() %}
-                <div class="delbtn">
-                <a href="/delete-post/{{ post.key.id() }}">Delete</a>
-                </div>
+            
+            {% if user.admin==True %}
+            <div class="btn-group" role="group" aria-label="...">
+                {% if user.admin==True %}
+                <a type="button" class="btn btn-danger" href="/delete-topic/{{ topic.key.id() }}">Delete topic</a>
+                {% endif %}
+                {% if topic.closed==False and user.admin==True %}
+                <a type="button" class="btn btn-warning" href="/close-open/{{ topic.key.id() }}">Close topic</a>
+                {% endif %}
+                {% if topic.closed==True and user.admin==True %}
+                <a type="button" class="btn btn-warning" href="/close-open/{{ topic.key.id() }}">Open topic</a>
+                {% endif %}
+            </div>
             {% endif %}
+    </div>
+</div>
+<br>
+    
+    {% for post in seznam %}
+    <div class="container container-small">
+    <div class="post">
+    <div>
+        <div class="panel panel-primary" id="{{ post.key.id() }}">
+            <div class="panel-heading clearfix">
+                <p href="/topic/{{ topic.key.id() }}#{{ post.key.id() }}" class="pull-left">Posted by {{ post.name }}   <span class="date">{{ post.date }}</span></p>
+                    {% if user.admin==True or post.name==user.nickname() %}
+                    <div class="btn-group pull-right">
+                        <a class="btn btn-danger"  href="/delete-post/{{ post.key.id() }}" role="button">Delete</a>
+                    </div>
+                    {% endif %}
             </div>
-                <div class="content">
-                {{ post.content }}
-                </div>
+          <div class="panel-body">
+            {{ post.content }}
+          </div>
         </div>
     </div>
-    {% endfor %}
-
+    </div>
+    </div>
+    {% endfor %} 
+    
+    
     {% if user.nickname() and topic.closed==False %}
-        <div class="postbot">
-            <div>
-                <h3>Add a new post:</h3>
-            </div>
-            <div>
-                <form name="new-post" method="post">
-                    <div class="conttpc">
-                    <textarea name="content" placeholder="Text goes here..."></textarea>
-                    </div>
-                    <br>
-                    <input name="new-post" type="submit" class="gumb" value="Post">
-                    <br><br>
-                </form>
-            </div>
+      
+    <h4>Add a new post:</h4>
+    <br>
+    
+    <div class="container">
+        <form name="new-post" method="post">
+        <div class="input-group">
+            <span class="input-group-addon" id="basic-addon1">Message:</span>
+            <textarea name="content" class="form-control custom-control" placeholder="Message text..." rows="3" style="resize:none" required></textarea>
         </div>
-
+        <br>
+            
+        <button type="submit" class="btn btn-success" name="new-post" value="Post">Post</button>
+        </form>
+    </div>
+    
     {% elif user.nickname() == none %}
         <h3>You must be logged in to comment!</h3>
     {% elif topic.closed==True %}
         <h3>This topic is closed!</h3>
     {% endif %}
 
+<br><br>
 </body>
 </html>
