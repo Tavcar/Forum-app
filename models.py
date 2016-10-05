@@ -1,12 +1,12 @@
 from google.appengine.ext import ndb
 
+
 class Topic(ndb.Model):
     name = ndb.StringProperty()
     title = ndb.StringProperty()
     date = ndb.StringProperty()
     content = ndb.StringProperty()
     closed = ndb.BooleanProperty(default=False)
-
 
     @classmethod
     def create(cls, name, title, content, date):
@@ -25,6 +25,7 @@ class Post(ndb.Model):
     content = ndb.StringProperty()
     date = ndb.StringProperty()
     id_topic = ndb.IntegerProperty()
+    #id_topic = ndb.KeyProperty(kind=Topic)
 
     @classmethod
     def create(cls, name, content, topic_id, date):

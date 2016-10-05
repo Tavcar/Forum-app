@@ -9,7 +9,7 @@ from models import Topic
 from operator import attrgetter
 from datetime import datetime
 from admins import ADMIN
-from decorators import login_required, admin_required
+from login import login_required, admin_required
 
 template_dir = os.path.join(os.path.dirname(__file__), "templates")
 jinja_env = jinja2.Environment(loader=jinja2.FileSystemLoader(template_dir), autoescape=True)
@@ -27,9 +27,11 @@ class BaseHandler(webapp2.RequestHandler):
         return self.write(self.render_str(template, **kw))
 
     def render_template(self, view_filename, params=None):
+
         if not params:
             params = {}
         template = jinja_env.get_template(view_filename)
+
         return self.response.out.write(template.render(params))
 
 
@@ -171,6 +173,7 @@ class CloseTopicHandler(BaseHandler):
             topic.closed = True
             topic.put()
             return self.redirect('/topic/' + str(topic.key.id()))
+
         else:
             topic.closed = False
             topic.put()

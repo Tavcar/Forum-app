@@ -58,7 +58,9 @@ target/
 
 
 
-templates/open.html
-templates/topic.html
 admins.py
 .pyc
+.idea
+templates/open.html
+templates/topic.html
+templates/post.html

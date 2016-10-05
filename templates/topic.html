@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ topic.title }}</title>
+</head>
+<body>
+
+
+    <h1>{{ topic.title }}</h1>
+
+    {% if admin %}
+    <a href="/delete-topic/{{ topic.key.id() }}" title="Delete topic"></a>
+    {% endif %}
+
+    {% for post in seznam %}
+    <div id="{{ post.key.id() }}">
+        <div>
+            {% if admin or post.name == user.nickname() %}
+            <div>
+            <a href="/topic/{{ topic.key.id() }}#{{ post.key.id() }}">Posted by {{ post.name }} {{ post.get_datetime(post.created).strftime('d%.%m.%Y at %H:%M') }})</a>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+    {% endfor %}
+
+
+    {% if user.nickname() %}
+        <div>
+            <div>
+                <h3>Add new post</h3>
+            </div>
+            <div>
+                <form name="new-post" method="post">
+                    <div class="form-group">
+                        <textarea name="content" placeholder="Write comment..."></textarea>
+                    </div>
+                    <input name="post post" type="submit" value="Post">
+                </form>
+            </div>
+        </div>
+    {% else %}
+        <h3>Za komentiranje morate biti prijavljeni</h3>
+    {% endif %}
+
+
+</body>
+</html>

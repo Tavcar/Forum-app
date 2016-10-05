@@ -1,34 +1,66 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Create new topic</title>
+    <link rel="stylesheet"
+href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script
+src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script
+src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <link rel="stylesheet" href="/assets/css/style.css">
 </head>
 <body>
 
-    <nav class="navbar">
-            <div class="navbar-header">
-                <a class="navbar-brand" href="/">Home </a>
-                <a class="navbar-brand" href="/new-topic">Create new topic</a>
-            </div>
-    </nav>
-    <br><br>
+<nav class="navbar navbar-inverse navbar-static-top">
+  <div class="container-fluid">
+    <!-- Brand and toggle get grouped for better mobile display -->
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+    </div>
+
+    <!-- Collect the nav links, forms, and other content for toggling -->
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+      <ul class="nav navbar-nav">
+          <li><a href="/">Topics</a></li>
+          <li class="active"><a href="/new-topic">Create new topic<span class="sr-only">(current)</span></a></li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li><a href="{{ logout_url }}">Logout</a></li>
+      </ul>
+    </div><!-- /.navbar-collapse -->
+  </div><!-- /.container-fluid -->
+</nav>
+
+<br>
 
 {% if user.nickname() %}
     <h1>Create topic</h1>
     <br><br>
-
-    <form action="/new-topic" method="post" class="newtpc">
-        <p>Title:</p><input name="title" required>
-        <br><br>
-            <div class="text">
-            <p>Content:</p><textarea name="content" required></textarea>
-            </div>
+    
+    <div class="container">
+        <form action="/new-topic" method="post">
+        <div class="input-group input-group-lg">
+            <span class="input-group-addon" id="sizing-addon1">Title:</span>
+            <input name="title" type="text" class="form-control" placeholder="Title text..." aria-describedby="sizing-addon1" required>
+        </div>
         <br>
-        <button type="submit" class="gumb">Create</button>
-        <br><br>
-    </form>
+        <div class="input-group">
+            <span class="input-group-addon" id="basic-addon1">Content:</span>
+            <textarea name="content" class="form-control custom-control" placeholder="Content text..." rows="3" style="resize:none" required></textarea>
+        </div>
+        <br>
+        <button type="submit" class="btn btn-success">Create</button>
+        </form>
+    </div>
+
 {% endif %}
 
 </body>
